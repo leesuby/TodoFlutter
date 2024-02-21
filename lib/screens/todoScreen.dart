@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
+import 'package:flutter_tasks_app/blocs/bloc/bloc/todo_task_bloc.dart';
 import 'package:flutter_tasks_app/blocs/bloc_exports.dart';
 import 'package:flutter_tasks_app/widgets/todoTaskList.dart';
 import 'package:intl/intl.dart';
@@ -22,6 +24,7 @@ class TodoScreen extends StatefulWidget {
 
 class _TodoScreenState extends State<TodoScreen> {
   final List<bool> _selectedFilter = <bool>[true, false, false];
+  TextEditingController searchController = TextEditingController();
   void _addTodoTask(BuildContext context) {
     showModalBottomSheet(
         context: context,
@@ -43,16 +46,38 @@ class _TodoScreenState extends State<TodoScreen> {
         return Scaffold(
           appBar: AppBar(
             title: const Text('Todo App'),
-            actions: [
-              IconButton(
-                onPressed: () => _addTodoTask(context),
-                icon: const Icon(Icons.add),
-              )
-            ],
           ),
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              SizedBox(
+                height: 30,
+                width: 360,
+                child: TextField(
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Color.fromARGB(255, 246, 217, 252),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide.none,
+                    ),
+                    hintText: "Search for Items",
+                    prefixIcon: const Icon(Icons.search),
+                    prefixIconColor: Colors.black,
+                    contentPadding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      context
+                          .read<TodoTaskBloc>()
+                          .add(SearchTodoTask(keyword: value));
+                    });
+                  },
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
               ToggleButtons(
                 direction: Axis.horizontal,
                 onPressed: (int index) {
@@ -140,20 +165,32 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                   icon: Icon(Icons.timer), labelText: "Enter Time"),
               readOnly: true,
               onTap: () async {
-                DateTime? pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime(2101));
-
-                if (pickedDate != null) {
-                  String formattedDate =
-                      DateFormat('yyyy-MM-dd').format(pickedDate);
+               DatePicker.showDateTimePicker(context, showTitleActions: true,
+                      onChanged: (date) {
+                    print('change $date in time zone ' +
+                        date.timeZoneOffset.inHours.toString());
+                  }, onConfirm: (date) {
+                    String formattedDate =
+                      DateFormat('yyyy-MM-dd hh:mm:ss').format(date);
                   setState(() {
                     timeTodoTaskController.text =
                         formattedDate; //set output date to TextField value.
                   });
-                }
+                  }, currentTime: DateTime.now());
+                // DateTime? pickedDate = await showDatePicker(
+                //     context: context,
+                //     initialDate: DateTime.now(),
+                //     firstDate: DateTime(2000),
+                //     lastDate: DateTime(2101));
+
+                // if (pickedDate != null) {
+                //   String formattedDate =
+                //       DateFormat('yyyy-MM-dd').format(pickedDate);
+                //   setState(() {
+                //     timeTodoTaskController.text =
+                //         formattedDate; //set output date to TextField value.
+                //   });
+                // }
               }),
           const SizedBox(
             height: 10,

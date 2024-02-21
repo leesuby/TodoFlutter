@@ -5,7 +5,7 @@ import 'package:flutter_tasks_app/blocs/bloc_exports.dart';
 import 'package:flutter_tasks_app/models/todoTask.dart';
 import 'package:intl/intl.dart';
 
-class TodoTasksList extends StatelessWidget {
+class TodoTasksList extends StatefulWidget {
   const TodoTasksList({
     Key? key,
     required this.todoTasks,
@@ -14,15 +14,20 @@ class TodoTasksList extends StatelessWidget {
   final List<TodoTask> todoTasks;
 
   @override
+  State<TodoTasksList> createState() => _TodoTasksListState();
+}
+
+class _TodoTasksListState extends State<TodoTasksList> {
+  @override
   Widget build(BuildContext context) {
     return Expanded(
       child: ListView.builder(
-        itemCount: todoTasks.length,
+        itemCount: widget.todoTasks.length,
         itemBuilder: (context,index) {
-          var task = todoTasks[index]; 
+          var task = widget.todoTasks[index]; 
           return ListTile(
             title: Text(task.title),
-            subtitle: Text(task.time == null? "No Time" : "Time: " + DateFormat('yyyy-MM-dd').format(task.time)),
+            subtitle: Text(task.time == null? "No Time" : "Time: " + DateFormat('yyyy-MM-dd hh:mm:ss').format(task.time)),
             trailing: Checkbox(
               value: task.isDone,
               onChanged: (value) {

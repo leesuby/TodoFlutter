@@ -46,3 +46,13 @@ class SortTodoTask extends TodoTaskEvent {
   @override
   List<Object> get props => [sortType];
 }
+
+class SearchTodoTask extends TodoTaskEvent {
+  final String keyword;
+  const SearchTodoTask ({
+    required this.keyword
+  });
+
+  @override
+  List<Object> get props => [keyword];
+}
