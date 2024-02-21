@@ -7,6 +7,12 @@ import 'package:intl/intl.dart';
 import '../models/todoTask.dart';
 
 // ignore: must_be_immutable
+const List<Widget> filterType = <Widget>[
+  Text('All'),
+  Text('Today'),
+  Text('Upcoming')
+];
+
 class TodoScreen extends StatefulWidget {
   TodoScreen({Key? key}) : super(key: key);
 
@@ -15,6 +21,7 @@ class TodoScreen extends StatefulWidget {
 }
 
 class _TodoScreenState extends State<TodoScreen> {
+  final List<bool> _selectedFilter = <bool>[true, false, false];
   void _addTodoTask(BuildContext context) {
     showModalBottomSheet(
         context: context,
@@ -46,12 +53,42 @@ class _TodoScreenState extends State<TodoScreen> {
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Center(
-                child: Chip(
-                  label: Text(
-                    'Tasks:',
-                  ),
+              ToggleButtons(
+                direction: Axis.horizontal,
+                onPressed: (int index) {
+                  setState(() {
+                    // The button that is tapped is set to true, and the others to false.
+                    for (int i = 0; i < _selectedFilter.length; i++) {
+                      _selectedFilter[i] = i == index;
+                    }
+
+                    if (index == 0)
+                      context
+                          .read<TodoTaskBloc>()
+                          .add(SortTodoTask(sortType: 0));
+
+                    if (index == 1)
+                      context
+                          .read<TodoTaskBloc>()
+                          .add(SortTodoTask(sortType: -1));
+
+                    if (index == 2)
+                      context
+                          .read<TodoTaskBloc>()
+                          .add(SortTodoTask(sortType: 1));
+                  });
+                },
+                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                selectedBorderColor: Color.fromARGB(255, 227, 150, 238),
+                selectedColor: Colors.white,
+                fillColor: Color.fromARGB(255, 244, 173, 239),
+                color: Color.fromARGB(255, 190, 42, 161),
+                constraints: const BoxConstraints(
+                  minHeight: 40.0,
+                  minWidth: 80.0,
                 ),
+                isSelected: _selectedFilter,
+                children: filterType,
               ),
               TodoTasksList(todoTasks: todoTaskList),
             ],
@@ -98,35 +135,33 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                 border: OutlineInputBorder(),
               )),
           TextField(
-            controller: timeTodoTaskController,
-            decoration: const InputDecoration(
-                icon: Icon(Icons.timer), labelText: "Enter Time"),
-            readOnly: true,
-            onTap: () async {
-              DateTime? pickedDate = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(2101));
+              controller: timeTodoTaskController,
+              decoration: const InputDecoration(
+                  icon: Icon(Icons.timer), labelText: "Enter Time"),
+              readOnly: true,
+              onTap: () async {
+                DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2101));
 
-              if (pickedDate != null) {
-                String formattedDate =
-                    DateFormat('yyyy-MM-dd').format(pickedDate);
-                setState(() {
-                  timeTodoTaskController.text =
-                      formattedDate; //set output date to TextField value.
-                });
-              }
-            }
-          ),
+                if (pickedDate != null) {
+                  String formattedDate =
+                      DateFormat('yyyy-MM-dd').format(pickedDate);
+                  setState(() {
+                    timeTodoTaskController.text =
+                        formattedDate; //set output date to TextField value.
+                  });
+                }
+              }),
           const SizedBox(
             height: 10,
           ),
           if (timeTodoTaskController.text.isEmpty ||
               titleTodoTaskController.text.isEmpty)
-            const Text(
-              '*Necessary information fields cannot be left blank',
-              style: TextStyle(color: Colors.deepOrange) ),
+            const Text('*Necessary information fields cannot be left blank',
+                style: TextStyle(color: Colors.deepOrange)),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [

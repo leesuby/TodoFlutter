@@ -37,12 +37,12 @@ class DeleteTodoTask extends TodoTaskEvent {
   List<Object> get props => [task];
 }
 
-class ChangeTodoTask extends TodoTaskEvent {
-  final TodoTask task;
-  const ChangeTodoTask ({
-    required this.task,
+class SortTodoTask extends TodoTaskEvent {
+  final int sortType; // <0: Today, 0: All, >0 Upcoming
+  const SortTodoTask ({
+    required this.sortType
   });
 
   @override
-  List<Object> get props => [task];
+  List<Object> get props => [sortType];
 }

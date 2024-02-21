@@ -10,19 +10,20 @@ class TodoTaskBloc extends Bloc<TodoTaskEvent, TodoTaskState> {
     on<UpdateTodoTask>(_onUpdateTodoTask);
     on<AddTodoTask>(_onAddTodoTask);
     on<DeleteTodoTask>(_onDeleteTodoTask);
-    on<ChangeTodoTask>(_onChangeTodoTask);
+    on<SortTodoTask>(_onSortTodoTask);
   }
 
   void _onAddTodoTask(AddTodoTask event, Emitter<TodoTaskState> emit) {
     final state = this.state;
     emit(TodoTaskState(
       listTodoTasks: List.from(state.listTodoTasks)..add(event.task),
+      listTodoTasksOrigin: List.from(state.listTodoTasks)..add(event.task),
     ));
   }
 
   void _onDeleteTodoTask(DeleteTodoTask event, Emitter<TodoTaskState> emit) {
     final state = this.state;
-    emit(TodoTaskState(listTodoTasks: List.from(state.listTodoTasks)..remove(event.task)));
+    emit(TodoTaskState(listTodoTasks: List.from(state.listTodoTasks)..remove(event.task), listTodoTasksOrigin: List.from(state.listTodoTasks)..remove(event.task)));
   }
 
   void _onUpdateTodoTask(UpdateTodoTask event, Emitter<TodoTaskState> emit) {
@@ -33,13 +34,35 @@ class TodoTaskBloc extends Bloc<TodoTaskEvent, TodoTaskState> {
     List<TodoTask> allTodoTasks = List.from(state.listTodoTasks)..remove(task);
     allTodoTasks.insert(index,task.copyWith(isDone: task.isDone == false));
 
-    emit(TodoTaskState(listTodoTasks: allTodoTasks));
+    emit(TodoTaskState(listTodoTasks: allTodoTasks, listTodoTasksOrigin:allTodoTasks));
   }
 
-  void _onChangeTodoTask(ChangeTodoTask event, Emitter<TodoTaskState> emit) {
+  void _onSortTodoTask(SortTodoTask event, Emitter<TodoTaskState> emit) {
     final state = this.state;
+    final sortType = event.sortType;
+    List<TodoTask> listTodoTasksFilter = List<TodoTask>.from(state.listTodoTasksOrigin).where((element) {
+      if (sortType == 0) {
+        return true;
+      }
+
+      DateTime now = DateTime.now();
+      if (sortType < 0) {
+        return 
+        element.time.year == now.year && 
+        element.time.month == now.month &&
+        element.time.day == now.day;
+      }
+
+      if (sortType > 0) {
+        return element.time.millisecondsSinceEpoch > now.millisecondsSinceEpoch;
+      }
+
+      return false;
+    },).toList();
+
     emit(TodoTaskState(
-      listTodoTasks: List.from(state.listTodoTasks)..add(event.task),
+      listTodoTasks:listTodoTasksFilter,
+      listTodoTasksOrigin: state.listTodoTasksOrigin
     ));
   }
 }
