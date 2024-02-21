@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:flutter_tasks_app/blocs/bloc/bloc/todo_task_bloc.dart';
 import 'package:flutter_tasks_app/blocs/bloc_exports.dart';
+import 'package:flutter_tasks_app/services/notificationService.dart';
 import 'package:flutter_tasks_app/widgets/todoTaskList.dart';
 import 'package:intl/intl.dart';
 
@@ -81,6 +82,7 @@ class _TodoScreenState extends State<TodoScreen> {
               ToggleButtons(
                 direction: Axis.horizontal,
                 onPressed: (int index) {
+                  NotificationService().showNotification(title: 'test', body: 'test');
                   setState(() {
                     // The button that is tapped is set to true, and the others to false.
                     for (int i = 0; i < _selectedFilter.length; i++) {

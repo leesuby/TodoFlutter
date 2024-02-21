@@ -1,8 +1,8 @@
 // This is a generated file; do not edit or check into version control.
 FLUTTER_ROOT=/Users/lap15047/Downloads/Flutter/flutter
-FLUTTER_APPLICATION_PATH=/Users/lap15047/Downloads/flutter_tasks_app - 0
+FLUTTER_APPLICATION_PATH=/Users/lap15047/Downloads/todoApp
 COCOAPODS_PARALLEL_CODE_SIGN=true
-FLUTTER_TARGET=/Users/lap15047/Downloads/flutter_tasks_app - 0/lib/main.dart
+FLUTTER_TARGET=/Users/lap15047/Downloads/todoApp/lib/main.dart
 FLUTTER_BUILD_DIR=build
 FLUTTER_BUILD_NAME=1.0.0
 FLUTTER_BUILD_NUMBER=1
@@ -12,4 +12,4 @@ DART_DEFINES=RkxVVFRFUl9XRUJfQVVUT19ERVRFQ1Q9dHJ1ZQ==,RkxVVFRFUl9XRUJfQ0FOVkFTS0
 DART_OBFUSCATION=false
 TRACK_WIDGET_CREATION=true
 TREE_SHAKE_ICONS=false
-PACKAGE_CONFIG=/Users/lap15047/Downloads/flutter_tasks_app - 0/.dart_tool/package_config.json
+PACKAGE_CONFIG=/Users/lap15047/Downloads/todoApp/.dart_tool/package_config.json

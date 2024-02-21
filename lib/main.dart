@@ -3,8 +3,11 @@ import 'package:flutter_tasks_app/blocs/bloc_exports.dart';
 import 'package:flutter_tasks_app/models/todoTask.dart';
 
 import 'screens/todoScreen.dart';
+import 'services/notificationService.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  NotificationService().initNotification();
   runApp(const MyApp());
 }
 
