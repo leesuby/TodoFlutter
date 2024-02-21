@@ -4,11 +4,13 @@ import 'package:equatable/equatable.dart';
 // ignore: must_be_immutable
 class TodoTask extends Equatable {
   final String title;
+  final DateTime time;
   bool? isDone;
   bool? isDeleted;
 
   TodoTask({
     required this.title,
+    required this.time,
     this.isDone,
     this.isDeleted,
   }) {
@@ -18,11 +20,13 @@ class TodoTask extends Equatable {
 
   TodoTask copyWith({
     String? title,
+    DateTime? time,
     bool? isDone,
     bool? isDeleted,
   }) {
     return TodoTask(
       title: title ?? this.title,
+      time: time ?? this.time,
       isDone: isDone ?? this.isDone,
       isDeleted: isDeleted ?? this.isDeleted,
     );
@@ -31,6 +35,7 @@ class TodoTask extends Equatable {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'title': title,
+      'time': time,
       'isDone': isDone,
       'isDeleted': isDeleted,
     };
@@ -39,6 +44,7 @@ class TodoTask extends Equatable {
   factory TodoTask.fromMap(Map<String, dynamic> map) {
     return TodoTask(
       title: map['title'] as String,
+      time: map['time'] as DateTime,
       isDone: map['isDone'] != null ? map['isDone'] as bool : null,
       isDeleted: map['isDeleted'] != null ? map['isDeleted'] as bool : null,
     );
@@ -46,6 +52,6 @@ class TodoTask extends Equatable {
   
   @override
   List<Object?> get props => [
-    title,isDone,isDeleted,
+    title,time,isDone,isDeleted,
   ];
 }
