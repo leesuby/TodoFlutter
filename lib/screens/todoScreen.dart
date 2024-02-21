@@ -6,11 +6,14 @@ import 'package:flutter_tasks_app/widgets/todoTaskList.dart';
 import '../models/todoTask.dart';
 
 // ignore: must_be_immutable
-class TodoScreen extends StatelessWidget {
+class TodoScreen extends StatefulWidget {
   TodoScreen({Key? key}) : super(key: key);
 
-  TextEditingController titleTodoTaskController = TextEditingController();
+  @override
+  State<TodoScreen> createState() => _TodoScreenState();
+}
 
+class _TodoScreenState extends State<TodoScreen> {
   void _addTodoTask(BuildContext context) {
     showModalBottomSheet(
         context: context,
@@ -19,8 +22,7 @@ class TodoScreen extends StatelessWidget {
                 padding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom,
                 ),
-                child: AddTaskBottomSheet(
-                    titleTodoTaskController: titleTodoTaskController),
+                child: const AddTaskBottomSheet(),
               ),
             ));
   }
@@ -35,7 +37,7 @@ class TodoScreen extends StatelessWidget {
             title: const Text('Todo App'),
             actions: [
               IconButton(
-                onPressed: () {},
+                onPressed: ()  => _addTodoTask(context),
                 icon: const Icon(Icons.add),
               )
             ],
@@ -66,14 +68,12 @@ class TodoScreen extends StatelessWidget {
 
 class AddTaskBottomSheet extends StatelessWidget {
   const AddTaskBottomSheet({
-    Key? key,
-    required this.titleTodoTaskController,
+    Key? key
   }) : super(key: key);
-
-  final TextEditingController titleTodoTaskController;
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController titleTodoTaskController = TextEditingController();
     return Container(
       padding: const EdgeInsets.all(12),
       child: Column(

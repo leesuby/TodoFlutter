@@ -7,6 +7,16 @@ class TodoTaskEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class UpdateTodoTask extends TodoTaskEvent {
+  final TodoTask task;
+  const UpdateTodoTask ({
+    required this.task,
+  });
+
+  @override
+  List<Object> get props => [task];
+}
+
 class AddTodoTask extends TodoTaskEvent {
   final TodoTask task;
   const AddTodoTask ({
@@ -20,6 +30,16 @@ class AddTodoTask extends TodoTaskEvent {
 class DeleteTodoTask extends TodoTaskEvent {
   final TodoTask task;
   const DeleteTodoTask ({
+    required this.task,
+  });
+
+  @override
+  List<Object> get props => [task];
+}
+
+class ChangeTodoTask extends TodoTaskEvent {
+  final TodoTask task;
+  const ChangeTodoTask ({
     required this.task,
   });
 

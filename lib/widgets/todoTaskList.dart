@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_tasks_app/blocs/bloc/bloc/todo_task_bloc.dart';
+import 'package:flutter_tasks_app/blocs/bloc_exports.dart';
 import 'package:flutter_tasks_app/models/todoTask.dart';
 
 class TodoTasksList extends StatelessWidget {
@@ -21,8 +23,11 @@ class TodoTasksList extends StatelessWidget {
             title: Text(task.title),
             trailing: Checkbox(
               value: task.isDone,
-              onChanged: (value) {},
+              onChanged: (value) {
+                context.read<TodoTaskBloc>().add(UpdateTodoTask(task: task));
+              },
             ),
+            onLongPress: () => context.read<TodoTaskBloc>().add(DeleteTodoTask(task: task)),
           );
         }),
     );
