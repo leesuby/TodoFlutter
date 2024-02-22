@@ -1,11 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_tasks_app/blocs/bloc_exports.dart';
 import 'package:flutter_tasks_app/models/todoTask.dart';
 
 part 'todo_task_event.dart';
 part 'todo_task_state.dart';
 
-class TodoTaskBloc extends Bloc<TodoTaskEvent, TodoTaskState> {
+class TodoTaskBloc extends HydratedBloc<TodoTaskEvent, TodoTaskState> {
   TodoTaskBloc() : super(const TodoTaskState()) {
     on<UpdateTodoTask>(_onUpdateTodoTask);
     on<AddTodoTask>(_onAddTodoTask);
@@ -103,5 +104,15 @@ class TodoTaskBloc extends Bloc<TodoTaskEvent, TodoTaskState> {
     emit(TodoTaskState(
         listTodoTasks: state.listTodoTasksOrigin,
         listTodoTasksOrigin: state.listTodoTasksOrigin));
+  }
+  
+  @override
+  TodoTaskState? fromJson(Map<String, dynamic> json) {
+    return TodoTaskState.fromMap(json);
+  }
+  
+  @override
+  Map<String, dynamic>? toJson(TodoTaskState state) {
+    return state.toMap();
   }
 }

@@ -35,7 +35,7 @@ class TodoTask extends Equatable {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'title': title,
-      'time': time,
+      'time': time.toIso8601String(),
       'isDone': isDone,
       'isDeleted': isDeleted,
     };
@@ -44,7 +44,7 @@ class TodoTask extends Equatable {
   factory TodoTask.fromMap(Map<String, dynamic> map) {
     return TodoTask(
       title: map['title'] as String,
-      time: map['time'] as DateTime,
+      time: DateTime.parse(map['time']),
       isDone: map['isDone'] != null ? map['isDone'] as bool : null,
       isDeleted: map['isDeleted'] != null ? map['isDeleted'] as bool : null,
     );
