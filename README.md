@@ -1,4 +1,4 @@
-Môn học: Thiết kế ứng dụng di động nâng cao <br />
+Môn học: Thiết kế ứng dụng di động nâng cao - 20KTPM <br />
 Sinh viên: Nguyễn Cao Thiên Long <br />
 MSSV: 19127203 <br />
 <br />
