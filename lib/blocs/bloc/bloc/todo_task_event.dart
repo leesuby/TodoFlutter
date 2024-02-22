@@ -56,3 +56,10 @@ class SearchTodoTask extends TodoTaskEvent {
   @override
   List<Object> get props => [keyword];
 }
+
+class ResetTodoTask extends TodoTaskEvent {
+  const ResetTodoTask ();
+
+  @override
+  List<Object> get props => [];
+}

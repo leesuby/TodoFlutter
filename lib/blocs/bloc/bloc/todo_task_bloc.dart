@@ -12,13 +12,15 @@ class TodoTaskBloc extends Bloc<TodoTaskEvent, TodoTaskState> {
     on<DeleteTodoTask>(_onDeleteTodoTask);
     on<SortTodoTask>(_onSortTodoTask);
     on<SearchTodoTask>(_onSearchTodoTask);
+    on<ResetTodoTask>(_onResetTodoTask);
   }
 
   void _onAddTodoTask(AddTodoTask event, Emitter<TodoTaskState> emit) {
     final state = this.state;
+
     emit(TodoTaskState(
       listTodoTasks: List.from(state.listTodoTasks)..add(event.task),
-      listTodoTasksOrigin: List.from(state.listTodoTasks)..add(event.task),
+      listTodoTasksOrigin: List.from(state.listTodoTasksOrigin)..add(event.task)
     ));
   }
 
@@ -92,6 +94,14 @@ class TodoTaskBloc extends Bloc<TodoTaskEvent, TodoTaskState> {
 
     emit(TodoTaskState(
         listTodoTasks: listTodoTasksFilter,
+        listTodoTasksOrigin: state.listTodoTasksOrigin));
+  }
+
+  void _onResetTodoTask(ResetTodoTask event, Emitter<TodoTaskState> emit) {
+    final state = this.state;
+ 
+    emit(TodoTaskState(
+        listTodoTasks: state.listTodoTasksOrigin,
         listTodoTasksOrigin: state.listTodoTasksOrigin));
   }
 }

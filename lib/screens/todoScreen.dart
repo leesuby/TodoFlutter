@@ -24,7 +24,7 @@ class TodoScreen extends StatefulWidget {
 }
 
 class _TodoScreenState extends State<TodoScreen> {
-  final List<bool> _selectedFilter = <bool>[true, false, false];
+  List<bool> _selectedFilter = <bool>[true, false, false];
   TextEditingController searchController = TextEditingController();
   void _addTodoTask(BuildContext context) {
     showModalBottomSheet(
@@ -69,11 +69,19 @@ class _TodoScreenState extends State<TodoScreen> {
                   ),
                   onChanged: (value) {
                     setState(() {
+                      _selectedFilter = <bool>[true, false, false];
+                      context.read<TodoTaskBloc>().add(const ResetTodoTask());
                       context
                           .read<TodoTaskBloc>()
                           .add(SearchTodoTask(keyword: value));
                     });
                   },
+                  onTap: (() {
+                    setState(() {
+                      _selectedFilter = <bool>[true, false, false];
+                      context.read<TodoTaskBloc>().add(const ResetTodoTask());
+                    });
+                  }),
                 ),
               ),
               const SizedBox(
@@ -82,7 +90,8 @@ class _TodoScreenState extends State<TodoScreen> {
               ToggleButtons(
                 direction: Axis.horizontal,
                 onPressed: (int index) {
-                  NotificationService().showNotification(title: 'test', body: 'test');
+                  NotificationService()
+                      .showNotification(title: 'test', body: 'test');
                   setState(() {
                     // The button that is tapped is set to true, and the others to false.
                     for (int i = 0; i < _selectedFilter.length; i++) {
@@ -121,7 +130,13 @@ class _TodoScreenState extends State<TodoScreen> {
             ],
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: () => _addTodoTask(context),
+            onPressed: () {
+              _addTodoTask(context);
+              setState(() {
+                _selectedFilter = <bool>[true, false, false];
+                context.read<TodoTaskBloc>().add(const ResetTodoTask());
+              });
+            },
             tooltip: 'Add Task',
             child: const Icon(Icons.add),
           ),
@@ -167,18 +182,18 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                   icon: Icon(Icons.timer), labelText: "Enter Time"),
               readOnly: true,
               onTap: () async {
-               DatePicker.showDateTimePicker(context, showTitleActions: true,
-                      onChanged: (date) {
-                    print('change $date in time zone ' +
-                        date.timeZoneOffset.inHours.toString());
-                  }, onConfirm: (date) {
-                    String formattedDate =
+                DatePicker.showDateTimePicker(context, showTitleActions: true,
+                    onChanged: (date) {
+                  print('change $date in time zone ' +
+                      date.timeZoneOffset.inHours.toString());
+                }, onConfirm: (date) {
+                  String formattedDate =
                       DateFormat('yyyy-MM-dd hh:mm:ss').format(date);
                   setState(() {
                     timeTodoTaskController.text =
                         formattedDate; //set output date to TextField value.
                   });
-                  }, currentTime: DateTime.now());
+                }, currentTime: DateTime.now());
                 // DateTime? pickedDate = await showDatePicker(
                 //     context: context,
                 //     initialDate: DateTime.now(),

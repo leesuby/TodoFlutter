@@ -5,7 +5,7 @@ class TodoTaskState extends Equatable {
   final List<TodoTask> listTodoTasksOrigin;
   const TodoTaskState({
     this.listTodoTasks = const <TodoTask>[],
-    this.listTodoTasksOrigin = const <TodoTask>[],
+    this.listTodoTasksOrigin = const <TodoTask>[]
   });
   
   @override
